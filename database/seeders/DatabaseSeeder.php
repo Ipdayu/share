@@ -17,8 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         // Existing user seeder
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Administrator',
+            'email' => 'ipdayu@gmail.com',
+            'password' => bcrypt('BrajaAsri@24'),
         ]);
 
         // Seed initial links
