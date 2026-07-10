@@ -24,6 +24,35 @@
                 </div>
             @endif
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                    <label for="parent_id" class="block text-sm font-medium text-gray-700">Kategori Induk (Lokasi
+                        Tautan)</label>
+                    <select name="parent_id" id="parent_id"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="">Halaman Utama (Root)</option>
+                        @foreach($subpages as $sub)
+                            <option value="{{ $sub->id }}" {{ old('parent_id', $link->parent_id) == $sub->id ? 'selected' : '' }}>
+                                Sub-Halaman: {{ $sub->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <p class="mt-1 text-xs text-gray-500">Pilih jika ingin memindahkan link ini ke dalam sub-halaman lain.
+                    </p>
+                </div>
+
+                <div class="flex flex-col justify-end pb-2">
+                    <div class="flex items-center">
+                        <input id="is_subpage" name="is_subpage" type="checkbox" value="1" {{ old('is_subpage', $link->is_subpage) ? 'checked' : '' }}
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="is_subpage" class="ml-2 block text-sm text-gray-900 font-semibold">Tipe: Sub-Halaman
+                            (Kategori Link)</label>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">Centang jika link ini ketika di-klik akan membuka halaman baru
+                        berisi kumpulan link-link anak.</p>
+                </div>
+            </div>
+
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700">Judul Link <span
                         class="text-red-500">*</span></label>
@@ -31,7 +60,7 @@
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
             </div>
 
-            <div>
+            <div id="url-container">
                 <label for="url" class="block text-sm font-medium text-gray-700">URL Tujuan <span
                         class="text-red-500">*</span></label>
                 <input type="url" name="url" id="url" value="{{ old('url', $link->url) }}" required
@@ -71,7 +100,7 @@
                         class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
 
-                <div class="flex flex-col justify-center pt-6">
+                <div class="flex flex-col justify-end pb-2">
                     <div class="flex items-center">
                         <input id="is_active" name="is_active" type="checkbox" value="1" {{ old('is_active', $link->is_active) ? 'checked' : '' }}
                             class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
@@ -86,6 +115,27 @@
                     Update Link
                 </button>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const isSubpageCheckbox = document.getElementById('is_subpage');
+                    const urlContainer = document.getElementById('url-container');
+                    const urlInput = document.getElementById('url');
+
+                    function toggleUrlField() {
+                        if (isSubpageCheckbox.checked) {
+                            urlContainer.style.display = 'none';
+                            urlInput.removeAttribute('required');
+                        } else {
+                            urlContainer.style.display = 'block';
+                            urlInput.setAttribute('required', 'required');
+                        }
+                    }
+
+                    isSubpageCheckbox.addEventListener('change', toggleUrlField);
+                    toggleUrlField(); // Run initially
+                });
+            </script>
         </form>
     </div>
 @endsection

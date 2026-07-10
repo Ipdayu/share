@@ -11,7 +11,7 @@ class LinkController extends Controller
     // Display list of links in admin
     public function index()
     {
-        $links = Link::orderBy('order')->get();
+        $links = Link::with('parent')->orderBy('order')->get();
 
         $settingsPath = storage_path('app/settings.json');
         $settings = file_exists($settingsPath) ? json_decode(file_get_contents($settingsPath), true) : [
@@ -25,20 +25,23 @@ class LinkController extends Controller
     // Show form to create a new link
     public function create()
     {
-        return view('admin.links.create');
+        $subpages = Link::where('is_subpage', true)->orderBy('title')->get();
+        return view('admin.links.create', compact('subpages'));
     }
 
     // Store new link
     public function store(Request $request)
     {
         $data = $request->validate([
+            'parent_id' => 'nullable|exists:links,id',
             'icon' => 'nullable|string|max:255',
             'icon_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'url' => 'required|url',
+            'url' => 'required_unless:is_subpage,1|nullable|url',
             'order' => 'required|integer',
             'is_active' => 'sometimes|boolean',
+            'is_subpage' => 'sometimes|boolean',
         ]);
 
         if ($request->hasFile('icon_file')) {
@@ -48,27 +51,39 @@ class LinkController extends Controller
         }
 
         $data['is_active'] = $request->has('is_active');
+        $data['is_subpage'] = $request->has('is_subpage');
+
+        if ($data['is_subpage']) {
+            $data['url'] = null;
+        }
+
         Link::create($data);
-        return redirect()->route('admin.links.index')->with('success', 'Link created');
+        return redirect()->route('admin.links.index')->with('success', 'Link berhasil ditambahkan.');
     }
 
     // Show edit form
     public function edit(Link $link)
     {
-        return view('admin.links.edit', compact('link'));
+        $subpages = Link::where('is_subpage', true)
+            ->where('id', '!=', $link->id)
+            ->orderBy('title')
+            ->get();
+        return view('admin.links.edit', compact('link', 'subpages'));
     }
 
     // Update existing link
     public function update(Request $request, Link $link)
     {
         $data = $request->validate([
+            'parent_id' => 'nullable|exists:links,id',
             'icon' => 'nullable|string|max:255',
             'icon_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'url' => 'required|url',
+            'url' => 'required_unless:is_subpage,1|nullable|url',
             'order' => 'required|integer',
             'is_active' => 'sometimes|boolean',
+            'is_subpage' => 'sometimes|boolean',
         ]);
 
         if ($request->hasFile('icon_file')) {
@@ -78,15 +93,23 @@ class LinkController extends Controller
         }
 
         $data['is_active'] = $request->has('is_active');
+        $data['is_subpage'] = $request->has('is_subpage');
+
+        if ($data['is_subpage']) {
+            $data['url'] = null;
+        } else {
+            // Keep parent_id null or change it if we want. Actually if it becomes not a subpage, children links should be updated? Or we can just save parent_id as requested
+        }
+
         $link->update($data);
-        return redirect()->route('admin.links.index')->with('success', 'Link updated');
+        return redirect()->route('admin.links.index')->with('success', 'Link berhasil diupdate.');
     }
 
     // Delete link
     public function destroy(Link $link)
     {
         $link->delete();
-        return redirect()->route('admin.links.index')->with('success', 'Link deleted');
+        return redirect()->route('admin.links.index')->with('success', 'Link berhasil dihapus.');
     }
 
     // Upload Logo

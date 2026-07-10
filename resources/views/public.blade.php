@@ -2,103 +2,110 @@
 
 @section('content')
 
-    <!-- Custom Image Based Curtain Splash Screen -->
-    <div id="splash-screen"
-        class="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none overflow-hidden">
+    @if(!isset($parent))
+        <!-- Custom Image Based Curtain Splash Screen -->
+        <div id="splash-screen"
+            class="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none overflow-hidden">
 
-        <!-- Left Curtain Panel (Seamless Half) -->
-        <div id="curtain-left"
-            class="absolute top-0 left-0 w-1/2 h-full z-10 transition-transform duration-[2000ms] ease-[cubic-bezier(0.645,0.045,0.355,1)] origin-left border-r shadow-[5px_0_30px_rgba(0,0,0,0.8)]"
-            style="background-image: url('{{ asset('curtain.png') }}'); background-size: 200% 100%; background-position: left center; background-repeat: no-repeat;">
-        </div>
-
-        <!-- Right Curtain Panel (Seamless Half) -->
-        <div id="curtain-right"
-            class="absolute top-0 right-0 w-1/2 h-full z-10 transition-transform duration-[2000ms] ease-[cubic-bezier(0.645,0.045,0.355,1)] origin-right border-l shadow-[-5px_0_30px_rgba(0,0,0,0.8)]"
-            style="background-image: url('{{ asset('curtain.png') }}'); background-size: 200% 100%; background-position: right center; background-repeat: no-repeat;">
-        </div>
-
-        <!-- Splash Content (Logo + Text) -->
-        <div id="splash-content" class="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-none transition-all duration-[1000ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] transform gap-5">
-            <div id="splash-logo" class="w-32 h-32 md:w-48 md:h-48 bg-white/90 rounded-full p-2 shadow-[0_0_120px_rgba(255,255,100,0.8)] border-[5px] border-[#d4af37] flex items-center justify-center transition-transform duration-[1000ms] ease-in-out transform relative">
-                <img src="{{ asset('logo.png') }}?v={{ time() }}" onerror="this.style.display='none'" class="w-full h-full object-cover rounded-full">
-                <!-- Inner glow / Pulser -->
-                <div class="absolute inset-0 rounded-full border-4 border-white animate-ping opacity-30"></div>
+            <!-- Left Curtain Panel (Seamless Half) -->
+            <div id="curtain-left"
+                class="absolute top-0 left-0 w-1/2 h-full z-10 transition-transform duration-[2000ms] ease-[cubic-bezier(0.645,0.045,0.355,1)] origin-left border-r shadow-[5px_0_30px_rgba(0,0,0,0.8)]"
+                style="background-image: url('{{ asset('curtain.png') }}'); background-size: 200% 100%; background-position: left center; background-repeat: no-repeat;">
             </div>
-            
-            <!-- Welcome Text -->
-            <h2 class="text-4xl md:text-5xl text-center text-white font-bold leading-tight" 
-                style="font-family: 'Dancing Script', cursive; text-shadow: 2px 2px 4px rgba(0,0,0,0.9), 0 0 25px rgba(212,175,55,0.9);">
-                Selamat datang di<br>
-                <span class="text-3xl md:text-4xl text-yellow-300" style="font-family: 'Montserrat', sans-serif; text-shadow: 2px 2px 5px rgba(0,0,0,0.9);">SMK Budi Utomo Way Jepara</span>
-            </h2>
+
+            <!-- Right Curtain Panel (Seamless Half) -->
+            <div id="curtain-right"
+                class="absolute top-0 right-0 w-1/2 h-full z-10 transition-transform duration-[2000ms] ease-[cubic-bezier(0.645,0.045,0.355,1)] origin-right border-l shadow-[-5px_0_30px_rgba(0,0,0,0.8)]"
+                style="background-image: url('{{ asset('curtain.png') }}'); background-size: 200% 100%; background-position: right center; background-repeat: no-repeat;">
+            </div>
+
+            <!-- Splash Content (Logo + Text) -->
+            <div id="splash-content"
+                class="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-none transition-all duration-[1000ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] transform gap-5">
+                <div id="splash-logo"
+                    class="w-32 h-32 md:w-48 md:h-48 bg-white/90 rounded-full p-2 shadow-[0_0_120px_rgba(255,255,100,0.8)] border-[5px] border-[#d4af37] flex items-center justify-center transition-transform duration-[1000ms] ease-in-out transform relative">
+                    <img src="{{ asset('logo.png') }}?v={{ time() }}" onerror="this.style.display='none'"
+                        class="w-full h-full object-cover rounded-full">
+                    <!-- Inner glow / Pulser -->
+                    <div class="absolute inset-0 rounded-full border-4 border-white animate-ping opacity-30"></div>
+                </div>
+
+                <!-- Welcome Text -->
+                <h2 class="text-4xl md:text-5xl text-center text-white font-bold leading-tight"
+                    style="font-family: 'Dancing Script', cursive; text-shadow: 2px 2px 4px rgba(0,0,0,0.9), 0 0 25px rgba(212,175,55,0.9);">
+                    Selamat datang di<br>
+                    <span class="text-3xl md:text-4xl text-yellow-300"
+                        style="font-family: 'Montserrat', sans-serif; text-shadow: 2px 2px 5px rgba(0,0,0,0.9);">SMK Budi Utomo
+                        Way Jepara</span>
+                </h2>
+            </div>
         </div>
-    </div>
 
-    <!-- Script Animation & Voice Initializer -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const splashScreen = document.getElementById('splash-screen');
-            const splashContent = document.getElementById('splash-content');
-            const splashLogo = document.getElementById('splash-logo');
-            const leftCurtain = document.getElementById('curtain-left');
-            const rightCurtain = document.getElementById('curtain-right');
-            let hasGreeted = false;
+        <!-- Script Animation & Voice Initializer -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const splashScreen = document.getElementById('splash-screen');
+                const splashContent = document.getElementById('splash-content');
+                const splashLogo = document.getElementById('splash-logo');
+                const leftCurtain = document.getElementById('curtain-left');
+                const rightCurtain = document.getElementById('curtain-right');
+                let hasGreeted = false;
 
-            // Optional: prevent background scrolling during splash
-            document.body.style.overflow = 'hidden';
+                // Optional: prevent background scrolling during splash
+                document.body.style.overflow = 'hidden';
 
-            // Prepare Voice Greeting
-            const greetVoice = function() {
-                if (hasGreeted) return;
-                hasGreeted = true;
-                if ('speechSynthesis' in window) {
-                    const msg = new SpeechSynthesisUtterance("Selamat datang di laman resmi SMK Budi Utomo.");
-                    msg.lang = 'id-ID';
-                    msg.pitch = 1.3; // slightly higher for softer female tone
-                    msg.rate = 0.95; // gentle, elegant pacing
-                    
-                    let voices = window.speechSynthesis.getVoices();
-                    let idVoice = voices.find(v => v.lang === 'id-ID' && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('perempuan') || true));
-                    if (idVoice) msg.voice = idVoice;
+                // Prepare Voice Greeting
+                const greetVoice = function () {
+                    if (hasGreeted) return;
+                    hasGreeted = true;
+                    if ('speechSynthesis' in window) {
+                        const msg = new SpeechSynthesisUtterance("Selamat datang di laman resmi SMK Budi Utomo.");
+                        msg.lang = 'id-ID';
+                        msg.pitch = 1.3; // slightly higher for softer female tone
+                        msg.rate = 0.95; // gentle, elegant pacing
 
-                    window.speechSynthesis.speak(msg);
-                }
-            };
+                        let voices = window.speechSynthesis.getVoices();
+                        let idVoice = voices.find(v => v.lang === 'id-ID' && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('perempuan') || true));
+                        if (idVoice) msg.voice = idVoice;
 
-            setTimeout(() => {
-                // 1. Logo spins, and the ENTIRE content (logo + text) shrinks and vanishes
-                splashLogo.style.transform = 'rotate(720deg)';
-                splashContent.style.transform = 'scale(0)';
-                splashContent.style.opacity = '0';
-                
+                        window.speechSynthesis.speak(msg);
+                    }
+                };
+
                 setTimeout(() => {
-                    // 1.5. Play the Greeting Voice as the curtains start to move
-                    try { greetVoice(); } catch (e) { }
-
-                    // 2. Curtains pull back heavily
-                    leftCurtain.style.transform = 'translateX(-100%)';
-                    rightCurtain.style.transform = 'translateX(100%)';
-                    document.body.style.overflow = 'auto'; // allow scroll
+                    // 1. Logo spins, and the ENTIRE content (logo + text) shrinks and vanishes
+                    splashLogo.style.transform = 'rotate(720deg)';
+                    splashContent.style.transform = 'scale(0)';
+                    splashContent.style.opacity = '0';
 
                     setTimeout(() => {
-                        // 3. Remove splash screen container
-                        splashScreen.style.display = 'none';
-                    }, 1500); // Wait for the slow grand 1.5s curtain slide
-                }, 700); // Pause after logo shrinks
+                        // 1.5. Play the Greeting Voice as the curtains start to move
+                        try { greetVoice(); } catch (e) { }
 
-            }, 1200); // 1.2s starting hold
+                        // 2. Curtains pull back heavily
+                        leftCurtain.style.transform = 'translateX(-100%)';
+                        rightCurtain.style.transform = 'translateX(100%)';
+                        document.body.style.overflow = 'auto'; // allow scroll
 
-            // Fallback Voice trigger if browser blocks autoplay audio until interaction
-            ['click', 'touchstart'].forEach(evt => {
-                document.addEventListener(evt, () => {
-                    if (!hasGreeted && splashScreen.style.display === 'none') {
-                        greetVoice();
-                    }
-                }, { once: true, passive: true });
+                        setTimeout(() => {
+                            // 3. Remove splash screen container
+                            splashScreen.style.display = 'none';
+                        }, 1500); // Wait for the slow grand 1.5s curtain slide
+                    }, 700); // Pause after logo shrinks
+
+                }, 1200); // 1.2s starting hold
+
+                // Fallback Voice trigger if browser blocks autoplay audio until interaction
+                ['click', 'touchstart'].forEach(evt => {
+                    document.addEventListener(evt, () => {
+                        if (!hasGreeted && splashScreen.style.display === 'none') {
+                            greetVoice();
+                        }
+                    }, { once: true, passive: true });
+                });
             });
-        });
-    </script>
+        </script>
+    @endif
 
     <style>
         /* ... existing keyframes below this ... */
@@ -299,6 +306,17 @@
     </div>
     <div class="max-w-[480px] mx-auto py-10 px-4 relative">
 
+        @if(isset($parent))
+            <!-- Floating Action: Back Button -->
+            <div class="absolute top-4 left-4 z-50">
+                <a href="{{ route('home') }}"
+                    class="w-10 h-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-full shadow border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:scale-110 transition-transform"
+                    title="Kembali ke Halaman Utama">
+                    <i class="fas fa-arrow-left text-lg"></i>
+                </a>
+            </div>
+        @endif
+
         <!-- Floating Actions: Dark Mode & Translate -->
         <div class="absolute top-4 right-4 flex items-center space-x-2 z-50">
             <!-- Language Dropdown using Google Translate (Must not be display:none) -->
@@ -330,38 +348,62 @@
                 style="text-shadow: 0 0 10px rgba(255,255,255,0.8); font-family: {!! $settings['font'] ?? 'inherit' !!};">
                 {{ $settings['title'] ?? 'SMK Budi Utomo Way Jepara' }}
             </h1>
-            @if(!empty($settings['bio']))
-                <p
-                    class="text-sm font-medium text-gray-800 dark:text-gray-200 bg-white/60 dark:bg-black/50 px-4 py-1.5 rounded-full inline-block backdrop-blur-md shadow-sm mt-1">
-                    {{ $settings['bio'] }}
-                </p>
+            
+            @if(isset($parent))
+                <div class="mt-2 text-center animate-fade-in-up animate-delay-1">
+                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold bg-blue-100 dark:bg-blue-900 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200 shadow-sm">
+                        @if($parent->icon)
+                            @if(strpos($parent->icon, 'uploads/') !== false)
+                                <img src="{{ asset($parent->icon) }}" class="w-4 h-4 rounded-full mr-2 inline-block object-cover">
+                            @else
+                                <i class="{{ $parent->icon }} mr-2"></i>
+                            @endif
+                        @else
+                            <i class="fas fa-folder-open mr-2"></i>
+                        @endif
+                        {{ $parent->title }}
+                    </span>
+                    @if($parent->description)
+                        <p class="text-xs text-gray-650 dark:text-gray-300 mt-2 max-w-xs mx-auto drop-shadow-sm">{{ $parent->description }}</p>
+                    @endif
+                </div>
+            @else
+                @if(!empty($settings['bio']))
+                    <p
+                        class="text-sm font-medium text-gray-800 dark:text-gray-200 bg-white/60 dark:bg-black/50 px-4 py-1.5 rounded-full inline-block backdrop-blur-md shadow-sm mt-1">
+                        {{ $settings['bio'] }}
+                    </p>
+                @endif
             @endif
         </div>
 
-        <!-- Highlight Gallery (3 Photos) -->
-        <div class="grid grid-cols-3 gap-3 mb-8 animate-fade-in-up animate-delay-2">
-            @for($i = 1; $i <= 3; $i++)
-                <div
-                    class="aspect-square rounded-xl overflow-hidden shadow-md bg-white/50 backdrop-blur-sm border border-white/50 hover:scale-[1.03] transition-transform duration-300">
-                    @if(file_exists(public_path('gallery' . $i . '.jpg')))
-                        <img src="{{ asset('gallery' . $i . '.jpg') }}?v={{ time() }}" alt="Gallery {{ $i }}"
-                            class="w-full h-full object-cover cursor-pointer" onclick="window.open(this.src, '_blank')">
-                    @else
-                        <!-- Placeholder if no photo uploaded -->
-                        <div
-                            class="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-100/50 dark:bg-gray-800/80">
-                            <i class="fas fa-camera text-xl opacity-50 mb-1"></i>
-                            <span class="text-[10px] font-semibold opacity-50">Lomba {{ $i }}</span>
-                        </div>
-                    @endif
-                </div>
-            @endfor
-        </div>
+        @if(!isset($parent))
+            <!-- Highlight Gallery (3 Photos) -->
+            <div class="grid grid-cols-3 gap-3 mb-8 animate-fade-in-up animate-delay-2">
+                @for($i = 1; $i <= 3; $i++)
+                    <div
+                        class="aspect-square rounded-xl overflow-hidden shadow-md bg-white/50 backdrop-blur-sm border border-white/50 hover:scale-[1.03] transition-transform duration-300">
+                        @if(file_exists(public_path('gallery' . $i . '.jpg')))
+                            <img src="{{ asset('gallery' . $i . '.jpg') }}?v={{ time() }}" alt="Gallery {{ $i }}"
+                                class="w-full h-full object-cover cursor-pointer" onclick="window.open(this.src, '_blank')">
+                        @else
+                            <!-- Placeholder if no photo uploaded -->
+                            <div
+                                class="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-100/50 dark:bg-gray-800/80">
+                                <i class="fas fa-camera text-xl opacity-50 mb-1"></i>
+                                <span class="text-[10px] font-semibold opacity-50">Lomba {{ $i }}</span>
+                            </div>
+                        @endif
+                    </div>
+                @endfor
+            </div>
+        @endif
 
         <!-- Links List -->
         <div class="flex flex-col space-y-4">
-            @foreach($links as $index => $link)
-                <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer"
+            @forelse($links as $index => $link)
+                <a href="{{ $link->is_subpage ? route('subpage', $link->id) : $link->url }}" 
+                    @if(!$link->is_subpage) target="_blank" rel="noopener noreferrer" @endif
                     class="animate-fade-in-up group relative flex items-center w-full p-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1 border border-white/50 dark:border-gray-700 hover:border-blue-300 transition-all duration-300"
                     style="animation-delay: {{ 0.2 + ($index * 0.05) }}s;">
 
@@ -375,27 +417,39 @@
                                 <i class="{{ $link->icon }} text-xl"></i>
                             @endif
                         @else
-                            <i class="fas fa-link text-xl"></i>
+                            @if($link->is_subpage)
+                                <i class="fas fa-folder text-xl"></i>
+                            @else
+                                <i class="fas fa-link text-xl"></i>
+                            @endif
                         @endif
                     </div>
 
                     <!-- Title -->
                     <div class="flex-grow text-center px-14">
                         <h3
-                            class="text-[17px] font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                            class="text-[17px] font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 font-sans">
                             {{ $link->title }}
                         </h3>
                         @if($link->description)
-                            <p class="text-xs text-gray-500 mt-0.5 max-w-xs mx-auto truncate">{{ $link->description }}</p>
+                            <p class="text-xs text-gray-500 mt-0.5 max-w-xs mx-auto truncate font-sans">{{ $link->description }}</p>
                         @endif
                     </div>
 
-                    <!-- Three dots decorative -->
+                    <!-- Chevron right for subpages, external icon for links -->
                     <div class="absolute right-4 text-gray-300 group-hover:text-blue-300">
-                        <i class="fas fa-ellipsis-v"></i>
+                        @if($link->is_subpage)
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        @else
+                            <i class="fas fa-external-link-alt text-xs opacity-70"></i>
+                        @endif
                     </div>
                 </a>
-            @endforeach
+            @empty
+                <div class="text-center py-8 text-gray-500 dark:text-gray-400 bg-white/40 dark:bg-black/20 backdrop-blur-md rounded-2xl border border-white/25 dark:border-gray-800 p-4">
+                    <p class="font-medium">Belum ada tautan di dalam kategori ini.</p>
+                </div>
+            @endforelse
         </div>
 
         <!-- Footer Branding -->
@@ -475,8 +529,8 @@
                 }
             @endif
 
-                                                    // DARK MODE TOGGLE LOGIC
-                                                    const darkToggleBtn = document.getElementById('dark-toggle-btn');
+                                                        // DARK MODE TOGGLE LOGIC
+                                                        const darkToggleBtn = document.getElementById('dark-toggle-btn');
             const darkIcon = document.getElementById('dark-icon');
 
             // Check initial state

@@ -231,8 +231,27 @@
                                         @endif
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $link->title }}</div>
-                                        <div class="text-sm text-gray-500">{{ $link->url }}</div>
+                                        <div class="text-sm font-medium text-gray-900 flex items-center gap-1.5 flex-wrap">
+                                            {{ $link->title }}
+                                            @if($link->is_subpage)
+                                                <span
+                                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                                                    <i class="fas fa-folder mr-1"></i> Sub-Halaman
+                                                </span>
+                                            @endif
+                                        </div>
+                                        @if($link->is_subpage)
+                                            <div class="text-xs text-gray-500 font-mono select-all">Dynamic url:
+                                                {{ route('subpage', $link->id) }}</div>
+                                        @else
+                                            <div class="text-sm text-gray-500 max-w-md truncate">{{ $link->url }}</div>
+                                        @endif
+                                        @if($link->parent)
+                                            <div class="text-xs text-gray-400 mt-1 flex items-center">
+                                                <i class="fas fa-level-up-alt rotate-90 mr-1 text-gray-300"></i> Di dalam: <span
+                                                    class="font-semibold text-gray-600 ml-1">{{ $link->parent->title }}</span>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </td>
@@ -246,6 +265,12 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                @if($link->is_subpage)
+                                    <a href="{{ route('admin.links.create', ['parent_id' => $link->id]) }}"
+                                        class="text-green-600 hover:text-green-900 mr-4 font-semibold">
+                                        <i class="fas fa-plus mr-1"></i>Isi Link
+                                    </a>
+                                @endif
                                 <a href="{{ route('admin.links.edit', $link->id) }}"
                                     class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
                                 <form action="{{ route('admin.links.destroy', $link->id) }}" method="POST"

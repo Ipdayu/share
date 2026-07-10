@@ -6,7 +6,7 @@ use App\Http\Controllers\LinkController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    $links = Link::activeOrdered()->get();
+    $links = Link::activeOrdered()->whereNull('parent_id')->get();
 
     // Load Settings
     $settingsPath = storage_path('app/settings.json');
@@ -17,6 +17,25 @@ Route::get('/', function () {
 
     return view('public', compact('links', 'settings'));
 })->name('home');
+
+Route::get('/p/{link}', function (Link $link) {
+    if (!$link->is_active || !$link->is_subpage) {
+        abort(404);
+    }
+
+    $links = Link::activeOrdered()->where('parent_id', $link->id)->get();
+
+    // Load Settings
+    $settingsPath = storage_path('app/settings.json');
+    $settings = file_exists($settingsPath) ? json_decode(file_get_contents($settingsPath), true) : [
+        'title' => 'SMK Budi Utomo Way Jepara',
+        'bio' => 'Pusat tautan resmi SMK Budi Utomo'
+    ];
+
+    $parent = $link;
+
+    return view('public', compact('links', 'settings', 'parent'));
+})->name('subpage');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
